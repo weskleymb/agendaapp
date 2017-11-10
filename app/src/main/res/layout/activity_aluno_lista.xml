@@ -5,24 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <ListView
+        android:id="@+id/lista_alunos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nome:" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Seu nome aqui" />
+        android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/cadastrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_cadastrar" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Seu resultado aqui..."/>
+        android:text="Adicionar Aluno" />
 
 </LinearLayout>
