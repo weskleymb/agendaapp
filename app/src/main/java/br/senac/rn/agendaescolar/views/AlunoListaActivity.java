@@ -1,8 +1,11 @@
 package br.senac.rn.agendaescolar.views;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -124,9 +127,13 @@ public class AlunoListaActivity extends AppCompatActivity {
                 item.setIntent(intentMapa);
                 break;
             case R.id.item_ligar:
-                Intent intentLigar = new Intent(Intent.ACTION_VIEW);
-                intentLigar.setData(Uri.parse("tel:" + aluno.getFone()));
-                item.setIntent(intentLigar);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 9);
+                } else {
+                    Intent intentLigar = new Intent(Intent.ACTION_CALL);
+                    intentLigar.setData(Uri.parse("tel:" + aluno.getFone()));
+                    item.setIntent(intentLigar);
+                }
                 break;
         }
         return super.onContextItemSelected(item);
