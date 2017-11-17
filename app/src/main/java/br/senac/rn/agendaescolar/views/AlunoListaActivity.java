@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.senac.rn.agendaescolar.daos.AlunoDao;
 import br.senac.rn.agendaescolar.models.Aluno;
 
 public class AlunoListaActivity extends AppCompatActivity {
@@ -43,39 +44,7 @@ public class AlunoListaActivity extends AppCompatActivity {
         lvAlunos = (ListView) findViewById(R.id.lista_alunos);
         btCadastrar = (Button) findViewById(R.id.cadastrar);
 
-        List<Aluno> alunos = new ArrayList<Aluno>();
-
-        alunos.add(new Aluno(
-                "Lucio Flávio",
-                "Av Alexandrino de Alencar, 1592",
-                "996360721",
-                "http://www.lemavorum.com.br",
-                10.0)
-        );
-
-        alunos.add(new Aluno(
-                "Carlos Bandeira",
-                "R da Diatomita, 357",
-                "996073082",
-                "http://www.facebook.com/doalceycarlos",
-                10.0)
-        );
-
-        alunos.add(new Aluno(
-                "Jalielson Andrade",
-                "R Baraúna, 408",
-                "988698986",
-                "http://www.facebook.com/jalielson.andrade",
-                10.0)
-        );
-
-        alunos.add(new Aluno(
-                "Janna Barbosa",
-                "R Sebastião Barreto, 4449",
-                "988881402",
-                "http://www.facebook.com/jannabarbosa",
-                10.0)
-        );
+        List<Aluno> alunos = new AlunoDao(this).buscarTodos();
 
         ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(
                 this,

@@ -1,8 +1,15 @@
 package br.senac.rn.agendaescolar.daos;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.senac.rn.agendaescolar.models.Aluno;
 
 public class AlunoDao extends SQLiteOpenHelper {
 
@@ -25,8 +32,36 @@ public class AlunoDao extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
 
+    public void inserir(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nome", aluno.getNome());
+        values.put("endereco", aluno.getEndereco());
+        values.put("fone", aluno.getFone());
+        values.put("site", aluno.getSite());
+        values.put("nota", aluno.getNota());
+        db.insert("Alunos", null, values);
+    }
+
+    public List<Aluno> buscarTodos() {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM Alunos";
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Aluno> alunos = new ArrayList<Aluno>();
+        while (cursor.moveToNext()) {
+            Aluno aluno = new Aluno();
+            aluno.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            aluno.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+            aluno.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
+            aluno.setFone(cursor.getString(cursor.getColumnIndex("fone")));
+            aluno.setSite(cursor.getString(cursor.getColumnIndex("site")));
+            aluno.setNota(cursor.getDouble(cursor.getColumnIndex("nota")));
+            alunos.add(aluno);
+        }
+        cursor.close();
+        return alunos;
     }
 
 }

@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import br.senac.rn.agendaescolar.daos.AlunoDao;
+import br.senac.rn.agendaescolar.models.Aluno;
+
 public class AlunoFormularioActivity extends AppCompatActivity {
 
     private EditText etNome, etEndereco, etFone, etSite;
@@ -42,14 +45,26 @@ public class AlunoFormularioActivity extends AppCompatActivity {
     }
 
     private void cadastrar() {
-        Toast.makeText(
-                this,
-                "Clicou no Botão",
-                Toast.LENGTH_LONG).show();
-        Intent intentChamaLista = new Intent(
-                this,
-                AlunoListaActivity.class);
-        startActivity(intentChamaLista);
+        AlunoDao dao = new AlunoDao(this);
+        Aluno aluno = new Aluno();
 
+        aluno.setNome(etNome.getText().toString());
+        aluno.setEndereco(etEndereco.getText().toString());
+        aluno.setFone(etFone.getText().toString());
+        aluno.setSite(etSite.getText().toString());
+        aluno.setNota(Double.valueOf(rbNota.getProgress()));
+
+        dao.inserir(aluno);
+
+        Intent intentChamaLista = new Intent(this,AlunoListaActivity.class);
+        startActivity(intentChamaLista);
+    }
+
+    private void limparCampos() {
+        etNome.setText("");
+        etEndereco.setText("");
+        etFone.setText("");
+        etSite.setText("");
+        rbNota.setProgress(0);
     }
 }
