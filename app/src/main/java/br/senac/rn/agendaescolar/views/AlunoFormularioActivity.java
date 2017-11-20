@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 import br.senac.rn.agendaescolar.daos.AlunoDao;
 import br.senac.rn.agendaescolar.models.Aluno;
 
@@ -42,6 +44,9 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         etSite = (EditText) findViewById(R.id.formulario_site);
         rbNota = (RatingBar) findViewById(R.id.formulario_nota);
         btCadastrar = (Button) findViewById(R.id.formulario_cadastrar);
+
+        Intent intent = getIntent();
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
     }
 
     private void cadastrar() {

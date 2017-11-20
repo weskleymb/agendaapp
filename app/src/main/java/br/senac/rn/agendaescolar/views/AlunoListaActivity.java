@@ -56,16 +56,22 @@ public class AlunoListaActivity extends AppCompatActivity {
     }
 
     private void definirEventos() {
-//        btCadastrar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Context contexto = AlunoListaActivity.this;
-//                String mensagem = "Clicou no botão";
-//                int duracao = Toast.LENGTH_LONG;
-//                Toast.makeText(contexto, mensagem, duracao).show();
-//                tvResultado.setText(etNome.getText().toString());
-//            }
-//        });
+        btCadastrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentChamaFormulario = new Intent(AlunoListaActivity.this, AlunoFormularioActivity.class);
+                startActivity(intentChamaFormulario);
+            }
+        });
+        lvAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> lista, View item, int posicao, long id) {
+                Aluno aluno = (Aluno) lvAlunos.getItemAtPosition(posicao);
+                Intent intentChamaFormulario = new Intent(AlunoListaActivity.this, AlunoFormularioActivity.class);
+                intentChamaFormulario.putExtra("aluno", aluno);
+                startActivity(intentChamaFormulario);
+            }
+        });
     }
 
     @Override
