@@ -34,15 +34,33 @@ public class AlunoDao extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
 
-    public void inserir(Aluno aluno) {
-        SQLiteDatabase db = getWritableDatabase();
+    private ContentValues pegaDadosAluno(Aluno aluno) {
         ContentValues values = new ContentValues();
         values.put("nome", aluno.getNome());
         values.put("endereco", aluno.getEndereco());
         values.put("fone", aluno.getFone());
         values.put("site", aluno.getSite());
         values.put("nota", aluno.getNota());
-        db.insert("Alunos", null, values);
+        return values;
+    }
+
+    public void inserir(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert("Alunos", null, pegaDadosAluno(aluno));
+    }
+
+    public void editar(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+        String where = "id = ?";
+        String[] params = {aluno.getId().toString()};
+        db.update("Alunos", pegaDadosAluno(aluno), where, params);
+    }
+
+    public void deletar(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+        String where = "id = ?";
+        String[] params = {aluno.getId().toString()};
+        db.delete("Alunos", where, params);
     }
 
     public List<Aluno> buscarTodos() {
