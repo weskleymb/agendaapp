@@ -63,9 +63,10 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         aluno.setNota(Double.valueOf(rbNota.getProgress()));
 
         dao.inserir(aluno);
+        finish();
 
-        Intent intentChamaLista = new Intent(this,AlunoListaActivity.class);
-        startActivity(intentChamaLista);
+//        Intent intentChamaLista = new Intent(this,AlunoListaActivity.class);
+//        startActivity(intentChamaLista);
     }
 
     private void limparCampos() {
