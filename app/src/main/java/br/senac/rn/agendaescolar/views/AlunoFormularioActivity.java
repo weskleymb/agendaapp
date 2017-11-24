@@ -19,6 +19,7 @@ public class AlunoFormularioActivity extends AppCompatActivity {
     private EditText etNome, etEndereco, etFone, etSite;
     private RatingBar rbNota;
     private Button btCadastrar;
+    private Aluno aluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,17 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         btCadastrar = (Button) findViewById(R.id.formulario_cadastrar);
 
         Intent intent = getIntent();
-        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+        aluno = (Aluno) intent.getSerializableExtra("aluno");
         if (aluno != null) {
             preencherCampos(aluno);
+        } else {
+            aluno = new Aluno();
         }
+
     }
 
     private void cadastrar() {
         AlunoDao dao = new AlunoDao(this);
-        Aluno aluno = new Aluno();
 
         aluno.setNome(etNome.getText().toString());
         aluno.setEndereco(etEndereco.getText().toString());
@@ -62,7 +65,11 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         aluno.setSite(etSite.getText().toString());
         aluno.setNota(Double.valueOf(rbNota.getProgress()));
 
-        dao.inserir(aluno);
+        if (aluno.getId() == null) {
+            dao.inserir(aluno);
+        } else {
+            dao.editar(aluno);
+        }
         finish();
 
 //        Intent intentChamaLista = new Intent(this,AlunoListaActivity.class);
