@@ -27,11 +27,13 @@ import java.util.List;
 import br.senac.rn.agendaescolar.adapter.AlunoAdapter;
 import br.senac.rn.agendaescolar.daos.AlunoDao;
 import br.senac.rn.agendaescolar.models.Aluno;
+import br.senac.rn.agendaescolar.service.AlunoService;
 
 public class AlunoListaActivity extends AppCompatActivity {
 
     private ListView lvAlunos;
     private Button btCadastrar;
+    private TextView teste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,8 @@ public class AlunoListaActivity extends AppCompatActivity {
     }
 
     private void carregaLista() {
-        List<Aluno> alunos = new AlunoDao(this).buscarTodos();
+//        List<Aluno> alunos = new AlunoDao(this).buscarTodos();
+        List<Aluno> alunos = new AlunoService().buscarTodos();
         AlunoAdapter adapter = new AlunoAdapter(this, alunos);
         lvAlunos.setAdapter(adapter);
     }
