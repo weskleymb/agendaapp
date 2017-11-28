@@ -13,7 +13,7 @@ public class AlunoService {
 
     public List<Aluno> buscarTodos() {
         List<Aluno> alunos = new ArrayList<Aluno>();
-        String endereco = "http://10.2.2.68:8080/agendaweb/resources/aluno/todos";
+        String endereco = "http://10.2.2.68:8080/agendaweb/servicos/aluno/todos";
         AcessoWS ws = new AcessoWS();
         Type tipo = new TypeToken<List<Aluno>>() {}.getType();
         Gson gson = new Gson();

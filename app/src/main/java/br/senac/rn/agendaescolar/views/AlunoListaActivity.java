@@ -1,10 +1,12 @@
 package br.senac.rn.agendaescolar.views;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +35,7 @@ public class AlunoListaActivity extends AppCompatActivity {
 
     private ListView lvAlunos;
     private Button btCadastrar;
-    private TextView teste;
+    private List<Aluno> alunos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,14 @@ public class AlunoListaActivity extends AppCompatActivity {
     private void inicializarComponentes() {
         lvAlunos = (ListView) findViewById(R.id.lista_alunos);
         btCadastrar = (Button) findViewById(R.id.cadastrar);
-        carregaLista();
+        //carregaLista();
+        new ExecutaServico().execute();
         registerForContextMenu(lvAlunos);
     }
 
     private void carregaLista() {
 //        List<Aluno> alunos = new AlunoDao(this).buscarTodos();
-        List<Aluno> alunos = new AlunoService().buscarTodos();
+        alunos = new AlunoService().buscarTodos();
         AlunoAdapter adapter = new AlunoAdapter(this, alunos);
         lvAlunos.setAdapter(adapter);
     }
@@ -125,4 +128,28 @@ public class AlunoListaActivity extends AppCompatActivity {
         }
         return super.onContextItemSelected(item);
     }
+
+    private class ExecutaServico extends AsyncTask {
+
+        private ProgressDialog dialogo;
+
+        @Override
+        protected void onPreExecute() {
+            dialogo = ProgressDialog.show(AlunoListaActivity.this, "Aguarde", "Carregando dados...");
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            alunos = new AlunoService().buscarTodos();
+            AlunoAdapter adapter = new AlunoAdapter(AlunoListaActivity.this, alunos);
+            lvAlunos.setAdapter(adapter);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            dialogo.dismiss();
+        }
+    }
+
 }
