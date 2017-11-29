@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-
+import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -94,12 +97,14 @@ public class AlunoFormularioActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODIGO_CAMERA && requestCode == RESULT_OK) {
+          if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Log.i("Caminho: ", mCurrentPhotoPath);
             Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
             bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
             ivFoto.setScaleType(ImageView.ScaleType.FIT_XY);
             ivFoto.setImageBitmap(bitmap);
         }
+
     }
 
     private void cadastrar() {
@@ -135,7 +140,9 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         rbNota.setProgress(aluno.getNota().intValue());
     }
 
-    private File criarArquivoImagem() throws IOException {
+
+
+    private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -145,6 +152,8 @@ public class AlunoFormularioActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
+
+        // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -156,7 +165,7 @@ public class AlunoFormularioActivity extends AppCompatActivity {
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = criarArquivoImagem();
+                photoFile = createImageFile();
             } catch (IOException ex) {
 
             }
