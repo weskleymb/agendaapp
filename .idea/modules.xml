@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/agendaapp.iml" filepath="$PROJECT_DIR$/agendaapp.iml" />
       <module fileurl="file://D:\Users\weskley\Documents\Projects\Android\agendaapp-senac\agendaapp.iml" filepath="D:\Users\weskley\Documents\Projects\Android\agendaapp-senac\agendaapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/agendaapp-senac.iml" filepath="$PROJECT_DIR$/agendaapp-senac.iml" />
+      <module fileurl="file://C:\Users\i2241\AndroidStudioProjects\agendaapp\agendaapp-senac.iml" filepath="C:\Users\i2241\AndroidStudioProjects\agendaapp\agendaapp-senac.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
