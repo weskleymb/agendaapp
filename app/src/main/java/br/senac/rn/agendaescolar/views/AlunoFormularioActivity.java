@@ -15,12 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import br.senac.rn.agendaescolar.daos.AlunoDao;
 import br.senac.rn.agendaescolar.models.Aluno;
 
@@ -34,6 +32,7 @@ public class AlunoFormularioActivity extends AppCompatActivity {
     private RatingBar rbNota;
     private Button btCadastrar, btFoto;
     private Aluno aluno;
+    private AlunoDao dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +79,27 @@ public class AlunoFormularioActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
           if (requestCode == CODIGO_CAMERA && resultCode == RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(caminhoImagem);
-            bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
-            ivFoto.setScaleType(ImageView.ScaleType.FIT_XY);
-            ivFoto.setImageBitmap(bitmap);
+              carregaImagem(caminhoImagem);
         }
 
     }
 
+    private void carregaImagem(String caminho) {
+        Bitmap bitmap = BitmapFactory.decodeFile(caminho);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
+        ivFoto.setScaleType(ImageView.ScaleType.FIT_XY);
+        ivFoto.setImageBitmap(bitmap);
+    }
+
     private void cadastrar() {
-        AlunoDao dao = new AlunoDao(this);
+        dao = new AlunoDao(this);
 
         aluno.setNome(etNome.getText().toString());
         aluno.setEndereco(etEndereco.getText().toString());
         aluno.setFone(etFone.getText().toString());
         aluno.setSite(etSite.getText().toString());
         aluno.setNota(Double.valueOf(rbNota.getProgress()));
+        aluno.setCaminhoFoto(caminhoImagem);
 
         if (aluno.getId() == null) {
             dao.inserir(aluno);
@@ -105,33 +109,20 @@ public class AlunoFormularioActivity extends AppCompatActivity {
         finish();
     }
 
-    private void limparCampos() {
-        etNome.setText("");
-        etEndereco.setText("");
-        etFone.setText("");
-        etSite.setText("");
-        rbNota.setProgress(0);
-    }
-
     private void preencherCampos(Aluno aluno) {
         etNome.setText(aluno.getNome());
         etEndereco.setText(aluno.getEndereco());
         etFone.setText(aluno.getFone());
         etSite.setText(aluno.getSite());
         rbNota.setProgress(aluno.getNota().intValue());
+        carregaImagem(aluno.getCaminhoFoto());
     }
-
-
 
     private File criarArquivoImagem() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = File.createTempFile(imageFileName /* prefix */, ".jpg" /* suffix */, storageDir /* directory */);
         caminhoImagem = image.getAbsolutePath();
         return image;
     }

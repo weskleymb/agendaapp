@@ -14,7 +14,7 @@ import br.senac.rn.agendaescolar.models.Aluno;
 public class AlunoDao extends SQLiteOpenHelper {
 
     public AlunoDao(Context context) {
-        super(context, "Agenda", null, 1);
+        super(context, "Agenda", null, 2);
     }
 
     @Override
@@ -26,13 +26,22 @@ public class AlunoDao extends SQLiteOpenHelper {
         sql += "endereco TEXT, ";
         sql += "fone TEXT, ";
         sql += "site TEXT, ";
-        sql += "nota REAL";
+        sql += "nota REAL, ";
+        sql += "foto TEXT";
         sql += ");";
         db.execSQL(sql);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String sql = new String();
+        switch (oldVersion) {
+            case 1: //Indo pra versão 2
+                sql = "ALTER TABLE Alunos ADD COLUMN foto TEXT";
+                break;
+        }
+        db.execSQL(sql);
+    }
 
     private ContentValues pegaDadosAluno(Aluno aluno) {
         ContentValues values = new ContentValues();
@@ -41,6 +50,7 @@ public class AlunoDao extends SQLiteOpenHelper {
         values.put("fone", aluno.getFone());
         values.put("site", aluno.getSite());
         values.put("nota", aluno.getNota());
+        values.put("foto", aluno.getCaminhoFoto());
         return values;
     }
 
@@ -76,6 +86,7 @@ public class AlunoDao extends SQLiteOpenHelper {
             aluno.setFone(cursor.getString(cursor.getColumnIndex("fone")));
             aluno.setSite(cursor.getString(cursor.getColumnIndex("site")));
             aluno.setNota(cursor.getDouble(cursor.getColumnIndex("nota")));
+            aluno.setCaminhoFoto(cursor.getString(cursor.getColumnIndex("foto")));
             alunos.add(aluno);
         }
         cursor.close();
